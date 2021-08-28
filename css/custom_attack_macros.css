@@ -1,0 +1,92 @@
+:root {
+  --crit-failure: #aa0200;
+  --crit-success: #18520b;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.align-items-center {
+  align-items: center;
+}
+
+.d-none {
+  display: none !important;
+}
+
+.crit-failure {
+  color: var(--crit-failure);
+}
+
+.crit-success {
+  color: var(--crit-success);
+}
+
+/* Attack Dialog Styling */
+.attack-dialog-grid .attack-dialog-row {
+  display: grid;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+.attack-dialog-grid .weapon-options-row {
+  grid-template-columns: 40% 60%;
+}
+.attack-dialog-grid .attack-options-row {
+  grid-template-columns: 40% 40%;
+}
+.attack-dialog-grid .roll-options-row {
+  grid-template-columns: repeat(3, calc(100% / 3));
+}
+
+/* ChatMessage Styling */
+.atk-result-formula {
+  text-align: center;
+  margin-bottom: 5px;
+  border-radius: 3px;
+  background: rgba(120, 120, 120, 0.2);
+  border: 1px solid #999;
+  border-image: initial;
+}
+.atk-result-tooltip {
+  display: none;
+  text-align: left;
+  width: 90%;
+  top: -50%;
+  left: 50%;
+  position: absolute;
+  z-index: 1;
+  background: url(/ui/parchment.jpg) repeat rgb(245, 242, 236);
+  border-radius: 6px;
+  padding: 5px 10px;
+  border-width: 2px;
+  border-style: solid;
+  border-color: rgb(111, 108, 102);
+  border-image: initial;
+}
+.atk-result-total:hover .atk-result-tooltip,
+.atk-result-tooltip-container:hover .atk-result-tooltip {
+  display: block;
+  transform: translate(-50%, -95%);
+  font-size: initial;
+}
+.atk-result-total {
+  position: relative;
+  font-size: 1.2em;
+  font-weight: bold;
+  line-height: 24px;
+  text-align: center;
+  margin-bottom: 3px;
+  border-radius: 3px;
+  background: rgba(120, 120, 120, 0.2);
+  border: 1px solid #999;
+  border-image: initial;
+}
+.atk-result-total-damage {
+  box-shadow: rgba(105, 0, 0, 0.76) 0px 0px 2px inset;
+  border-color: rgb(132, 5, 5);
+}
+.dmg-result-row {
+  position: relative;
+  padding-bottom: 0.5rem;
+}
