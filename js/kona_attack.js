@@ -51,10 +51,6 @@ function main() {
           <label for="kona-sneak-attack">Sneak Attack:</label>
           <input id="kona-sneak-attack" type="checkbox" checked />
         </div>
-        <div class="d-flex align-items-center">
-          <label for="kona-sharp-shooter">Sharp Shooter:</label>
-          <input id="kona-sharp-shooter" type="checkbox" />
-        </div>
       </div>
     </div>`;
 
@@ -68,16 +64,11 @@ function main() {
       Kona.data.data.abilities[weapon.data.data.ability].mod;
 
     const sneakAttackEnabled = html.find("#kona-sneak-attack")[0].checked;
-    const sharpShooterEnabled = html.find("#kona-sharp-shooter")[0].checked;
 
     const promisesArr = [];
     promisesArr.push(
       new Roll(
-        `${
-          d20Map[type]
-        } + ${weaponAttackBonus} + ${KonaAbilityMod} + ${KonaProf}${
-          sharpShooterEnabled ? " - 5" : ""
-        }`
+        `${d20Map[type]} + ${weaponAttackBonus} + ${KonaAbilityMod} + ${KonaProf}`
       ).roll()
     );
     promisesArr.push(
@@ -96,7 +87,6 @@ function main() {
     const [atkRoll, dmgRoll, sneakAttackRoll] = await Promise.all(promisesArr);
 
     const dieRoll = atkRoll.dice[0].results.find((die) => die.active).result;
-    const sharpShooterString = sharpShooterEnabled ? " + 10[ss]" : "";
     let isCrit = "";
     let critDamage = 0;
     let critDamageStr = "";
@@ -126,7 +116,6 @@ function main() {
 
     const totalDamage =
       dmgRoll.total +
-      (sharpShooterEnabled ? 10 : 0) +
       (sneakAttackRoll ? sneakAttackRoll.total : 0) +
       critDamage +
       critSneakAttack;
@@ -155,7 +144,7 @@ function main() {
             weaponDamageType[0].toUpperCase() + weaponDamageType.slice(1)
           } Damage:</strong>
           <span class="atk-result-tooltip-container">
-            ${dmgRoll.total + sharpShooterString + critDamageStr}
+            ${dmgRoll.total + critDamageStr}
             <div class="atk-result-tooltip">
               <div class="atk-result-formula">
                 <strong>${dmgRoll.formula}</strong>
@@ -170,7 +159,7 @@ function main() {
           <strong>Sneak Attack Damage:</strong>
           <span class="atk-result-tooltip-container">
             ${sneakAttackRoll.total}${
-        critSneakAttack ? " + " + critSneakAttack : ""
+        critSneakAttack ? " + " + critSneakAttack + "[crit]" : ""
       }
             <div class="atk-result-tooltip">
               <div class="atk-result-formula">

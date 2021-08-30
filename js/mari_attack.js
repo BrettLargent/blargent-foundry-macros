@@ -70,7 +70,7 @@ function main() {
           const [num, size] = die.split("d");
           const dmg = num * size;
           critDamage += dmg;
-          critDamageStr += ` + ${dmg}`;
+          critDamageStr += ` + ${dmg}[crit]`;
         });
       } else if (dieRoll === 1) {
         isCrit = "failure";
