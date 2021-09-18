@@ -1,5 +1,5 @@
 const diceRegex = /[1-9][0-9]*d[1-9][0-9]?/g;
-const KonaId = "aYGUVGtPpMNtfHmn";
+const KonaId = "2JTCkNhxa23qRmMW"; // TODO - restore correct id: "aYGUVGtPpMNtfHmn";
 const SneakAttackId = "RC3dnMjVaq7qymvP";
 
 main();
@@ -9,7 +9,6 @@ main();
  * Improve crit styling and add good/bad styling for damage results
  * Figure out how to not close dialog on button click
  * Add color styling to numbers when crit 
- * Detect if weapon is ranged and decrement ammunition
  * Add way to control roll visibility
     - see https://foundryvtt.com/api/data.ChatMessageData.html for info on whisper/blind properties
 */
@@ -38,7 +37,7 @@ function main() {
     }
     return false;
   };
-
+  // TODO recheck sneak attack input
   const dialogTemplate = `
     <h1>Select Attack</h1>
     <div class="attack-dialog-grid">
@@ -49,7 +48,7 @@ function main() {
       <div class="attack-dialog-row attack-options-row">
         <div class="d-flex align-items-center">
           <label for="kona-sneak-attack">Sneak Attack:</label>
-          <input id="kona-sneak-attack" type="checkbox" checked />
+          <input id="kona-sneak-attack" type="checkbox" />
         </div>
       </div>
     </div>`;
@@ -58,6 +57,18 @@ function main() {
   const rollAttackAndDamage = async (type, html) => {
     const weaponId = html.find("#kona-atk-weapon")[0].value;
     const weapon = Kona.items.get(weaponId);
+
+    const resource = weapon.data.data.consume;
+    if (resource.type === "ammo" && resource.target) {
+      const ammo = Kona.items.get(resource.target);
+      const ammoData = ammo.data.data;
+      if (!ammoData.quantity) {
+        ui.notifications.error("No ammunition remaining");
+        return;
+      }
+      ammo.update({ "data.quantity": ammoData.quantity - 1 });
+    }
+
     const weaponAttackBonus = weapon.data.data.attackBonus;
     const [weaponDamage, weaponDamageType] = weapon.data.data.damage.parts[0];
     const KonaAbilityMod =
